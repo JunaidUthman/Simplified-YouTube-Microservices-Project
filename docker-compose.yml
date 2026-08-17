@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for Microservices (Users & Video Metadata)
+  postgres:
+    image: postgres:16-alpine
+    container_name: youtube_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-youtube_db}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-youtube_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # User Management Microservice (NestJS)
+  user-service:
+    build:
+      context: ./apps/user-service
+      dockerfile: Dockerfile
+    container_name: youtube_user_service
+    restart: always
+    ports:
+      - "${USER_SERVICE_PORT:-3001}:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_NAME: ${DB_NAME:-youtube_db}
+    volumes:
+      - ./apps/user-service:/app
+      - /app/node_modules
+    command: npm run start:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
