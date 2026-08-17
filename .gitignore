@@ -32,3 +32,6 @@ yarn-error.log*
 .docker-data/
 minio-data/
 postgres-data/
+uploads/
+apps/video-service/uploads/
+

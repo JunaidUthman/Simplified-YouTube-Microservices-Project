@@ -59,13 +59,44 @@ services:
       PORT: 3002
       JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_youtube_platform_2026}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-86400}
-      USER_SERVICE_URL: http://user-service:3001
+      USER_SERVICE_URL: ${USER_SERVICE_URL:-http://user-service:3001}
     volumes:
+
       - ./apps/auth-service:/app
       - /app/node_modules
     command: npm run start:dev
     depends_on:
       - user-service
 
+  # Video Microservice (NestJS)
+  video-service:
+    build:
+      context: ./apps/video-service
+      dockerfile: Dockerfile
+    container_name: youtube_video_service
+    restart: always
+    ports:
+      - "${VIDEO_SERVICE_PORT:-3003}:3003"
+    environment:
+      NODE_ENV: development
+      PORT: 3003
+      JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_youtube_platform_2026}
+      USER_SERVICE_URL: ${USER_SERVICE_URL:-http://user-service:3001}
+      DB_HOST: postgres
+
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_NAME: ${DB_NAME:-youtube_db}
+      UPLOAD_DIR: ./uploads
+    volumes:
+      - ./apps/video-service:/app
+      - /app/node_modules
+    command: npm run start:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
+
