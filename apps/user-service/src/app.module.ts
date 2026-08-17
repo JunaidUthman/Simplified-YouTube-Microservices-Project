@@ -1,4 +1,4 @@
-import { UsersModule } from './users/users.module.ts';
+import { UsersModule } from './users/users.module';
 
 export class AppModule {
   public usersModule: UsersModule;

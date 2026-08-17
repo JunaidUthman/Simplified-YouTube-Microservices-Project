@@ -1,8 +1,8 @@
 import { test, describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
-import { UsersController } from './users.controller.ts';
-import { UsersService } from './users.service.ts';
-import { UsersRepository } from './users.repository.ts';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
+import { UsersRepository } from './users.repository';
 
 describe('UsersController Unit Tests', () => {
   let controller: UsersController;

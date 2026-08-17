@@ -1,4 +1,4 @@
-import { User, type UserProps } from './entities/user.entity.ts';
+import { User, type UserProps } from './entities/user.entity';
 
 export class UsersRepository {
   private users: Map<string, User> = new Map();

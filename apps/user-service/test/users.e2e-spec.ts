@@ -1,6 +1,6 @@
 import { test, describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
-import { AppModule } from '../src/app.module.ts';
+import { AppModule } from '../src/app.module';
 
 describe('User Service End-to-End (E2E) API Tests', () => {
   let appModule: AppModule;

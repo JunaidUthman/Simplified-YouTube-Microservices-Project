@@ -1,7 +1,7 @@
 import { test, describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert';
-import { UsersService, ConflictException, NotFoundException, BadRequestException } from './users.service.ts';
-import { UsersRepository } from './users.repository.ts';
+import { UsersService, ConflictException, NotFoundException, BadRequestException } from './users.service';
+import { UsersRepository } from './users.repository';
 
 describe('UsersService Unit Tests', () => {
   let repository: UsersRepository;

@@ -1,7 +1,7 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { URL } from 'url';
-import { AppModule } from './app.module.ts';
-import { HttpException } from './users/users.service.ts';
+import { AppModule } from './app.module';
+import { HttpException } from './users/users.service';
 
 const PORT = parseInt(process.env.PORT || '3001', 10);
 

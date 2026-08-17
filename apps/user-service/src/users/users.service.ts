@@ -1,8 +1,8 @@
 import { randomUUID, pbkdf2Sync, randomBytes } from 'crypto';
-import { User } from './entities/user.entity.ts';
-import { UsersRepository } from './users.repository.ts';
-import { CreateUserDto } from './dto/create-user.dto.ts';
-import { UpdateUserDto } from './dto/update-user.dto.ts';
+import { User } from './entities/user.entity';
+import { UsersRepository } from './users.repository';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 export class HttpException extends Error {
   public message: string;
