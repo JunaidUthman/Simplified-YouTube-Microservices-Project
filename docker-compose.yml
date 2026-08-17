@@ -97,6 +97,25 @@ services:
       postgres:
         condition: service_healthy
 
+  # YouTube Web Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    container_name: youtube_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    depends_on:
+      - video-service
+      - auth-service
+      - user-service
+
 volumes:
   postgres_data:
+
 
