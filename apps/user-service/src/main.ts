@@ -61,6 +61,13 @@ async function bootstrap() {
       }
 
       // API Routes
+      // POST /users/validate-credentials - Validate email + password for Auth Service
+      if (pathname === '/users/validate-credentials' && method === 'POST') {
+        const body = await getBody();
+        const result = await controller.validateCredentials(body);
+        return sendJson(200, { statusCode: 200, data: result });
+      }
+
       // POST /users - Create User
       if (pathname === '/users' && method === 'POST') {
         const body = await getBody();

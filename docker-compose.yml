@@ -45,5 +45,27 @@ services:
       postgres:
         condition: service_healthy
 
+  # Authentication Microservice (NestJS)
+  auth-service:
+    build:
+      context: ./apps/auth-service
+      dockerfile: Dockerfile
+    container_name: youtube_auth_service
+    restart: always
+    ports:
+      - "${AUTH_SERVICE_PORT:-3002}:3002"
+    environment:
+      NODE_ENV: development
+      PORT: 3002
+      JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_key_youtube_platform_2026}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-86400}
+      USER_SERVICE_URL: http://user-service:3001
+    volumes:
+      - ./apps/auth-service:/app
+      - /app/node_modules
+    command: npm run start:dev
+    depends_on:
+      - user-service
+
 volumes:
   postgres_data:

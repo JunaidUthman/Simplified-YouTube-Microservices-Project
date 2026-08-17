@@ -28,6 +28,10 @@ export class UsersController {
     return await this.usersService.findByEmail(email);
   }
 
+  async validateCredentials(body: { email?: string; password?: string }) {
+    return await this.usersService.validateCredentials(body.email || '', body.password || '');
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.usersService.update(id, updateUserDto);
   }

@@ -34,6 +34,12 @@ export class BadRequestException extends HttpException {
   }
 }
 
+export class UnauthorizedException extends HttpException {
+  constructor(message: string = 'Invalid credentials') {
+    super(message, 401);
+  }
+}
+
 export class UsersService {
   private readonly usersRepository: UsersRepository;
 
@@ -128,6 +134,24 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User with email '${email}' not found`);
     }
+    return user.toResponseDto();
+  }
+
+  async validateCredentials(email: string, password: string) {
+    if (!email || !password) {
+      throw new BadRequestException('Email and password are required');
+    }
+
+    const user = await this.usersRepository.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const isValid = this.verifyPassword(password, user.password);
+    if (!isValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
     return user.toResponseDto();
   }
 
